@@ -9,13 +9,13 @@ sudo service nginx start
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test
 
-sudo echo "Holberton School" > /data/web_static/releases/test/index.html
+echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html
 
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data
 
-sudo cat > /etc/nginx/sites-available/default <<EOF
+cat | sudo tee /etc/nginx/sites-available/default <<EOF
 server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
