@@ -15,7 +15,7 @@ def do_pack():
 
         fmat = now.strftime("%Y%m%d%H%M%S")
 
-        local("tar -cvzf web_static_{}.tgz ./web_static".format(fmat))
+        local("tar -cvzf versions/web_static_{}.tgz web_static".format(fmat))
 
         return "versions/web_static_{}.tgz".format(fmat)
 
