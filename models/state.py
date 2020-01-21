@@ -12,15 +12,18 @@ class State(BaseModel, Base):
         name: input name
     """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state")
 
-    @property
-    def cities(self):
-        """get the cities with state_id equal"""
-        ret = []
-        for k, v in models.storage.all().items():
-            if k.split(".")[0] == "City":
-                if v.state_id == self.id:
-                    ret.append(v)
-        return ret
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state")
+
+    else:
+        @property
+        def cities(self):
+            """get the cities with state_id equal"""
+            ret = []
+            for k, v in models.storage.all().items():
+                if k.split(".")[0] == "City":
+                    if v.state_id == self.id:
+                        ret.append(v)
+            return ret

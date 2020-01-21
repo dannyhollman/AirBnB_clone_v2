@@ -86,5 +86,5 @@ class DBStorage:
     def close(self):
         """calls remove method on private attribute or close() on session
         """
-        DBStorage.__session = None
+        DBStorage.__session.close()
         self.reload()
