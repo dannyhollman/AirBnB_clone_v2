@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from flask import Flask, abort
 """ starts a flask web application """
 app = Flask(__name__)
