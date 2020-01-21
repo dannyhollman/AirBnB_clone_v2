@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """This is the state class"""
+import models
 from models.base_model import BaseModel, Base, Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import os
 
 
 class State(BaseModel, Base):
@@ -17,7 +19,7 @@ class State(BaseModel, Base):
     def cities(self):
         """get the cities with state_id equal"""
         ret = []
-        for k, v in storage.all().keys():
+        for k, v in models.storage.all().items():
             if k.split(".")[0] == "City":
                 if v.state_id == self.id:
                     ret.append(v)
