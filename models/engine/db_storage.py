@@ -11,7 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from sqlalchemy import (create_engine)
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage:
@@ -52,10 +52,19 @@ class DBStorage:
         q.extend(DBStorage.__session.query(Place).all())
         q.extend(DBStorage.__session.query(Review).all())
         ret = {}
-        for item in q:
-            key = "{}.{}".format(type(item).__name__, item.id)
-            ret[key] = item
-        return ret
+
+        if cls is not None:
+            for item in q:
+                if type(item).__name__ == cls:
+                    key = "{}.{}".format(type(item).__name__, item.id)
+                    ret[key] = item
+            return ret
+
+        else:
+            for item in q:
+                key = "{}.{}".format(type(item).__name__, item.id)
+                ret[key] = item
+            return ret
 
     def new(self, obj):
         """sets given obj in db
@@ -81,10 +90,9 @@ class DBStorage:
         Base.metadata.create_all(DBStorage.__engine)
         Session = sessionmaker()
         Session.configure(bind=DBStorage.__engine)
-        DBStorage.__session = Session()
+        DBStorage.__session = scoped_session(Session)
 
     def close(self):
         """calls remove method on private attribute or close() on session
         """
         DBStorage.__session.close()
-        self.reload()
