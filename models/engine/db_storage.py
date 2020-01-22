@@ -32,11 +32,11 @@ class DBStorage:
         db = os.environ['HBNB_MYSQL_DB']
 
         squrl = 'mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, db)
-        self.__engine = create_engine(squrl, pool_pre_ping=True)
+        DBStorage.__engine = create_engine(squrl, pool_pre_ping=True)
         self.reload()
 
         # drop all tables if HBNB_ENV == 'test'
-        if "HBNB_EN" in os.environ and os.environ['HBNB_ENV'] == 'test':
+        if "test" in os.environ and os.environ['HBNB_ENV'] == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -45,12 +45,12 @@ class DBStorage:
             returns a dictionary of all objects
         """
         q = []
-        q.extend(self.__session.query(User).all())
-        q.extend(self.__session.query(State).all())
-        q.extend(self.__session.query(City).all())
-        q.extend(self.__session.query(Amenity).all())
-        q.extend(self.__session.query(Place).all())
-        q.extend(self.__session.query(Review).all())
+        q.extend(DBStorage.__session.query(User).all())
+        q.extend(DBStorage.__session.query(State).all())
+        q.extend(DBStorage.__session.query(City).all())
+        q.extend(DBStorage.__session.query(Amenity).all())
+        q.extend(DBStorage.__session.query(Place).all())
+        q.extend(DBStorage.__session.query(Review).all())
         ret = {}
 
         if cls is not None:
@@ -72,17 +72,17 @@ class DBStorage:
             obj: given object
         """
         if obj:
-            self.__session.add(obj)
+            DBStorage.__session.add(obj)
 
     def delete(self, obj=None):
         """delete the given obj from db if not none"""
         if obj:
-            self.__session.delete(obj)
+            DBStorage.__session.delete(obj)
 
     def save(self):
         """commit all changes to db
         """
-        self.__session.commit()
+        DBStorage.__session.commit()
 
     def reload(self):
         """create all tables in the db and create current session from engine
