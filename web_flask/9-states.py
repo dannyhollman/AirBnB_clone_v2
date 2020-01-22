@@ -21,7 +21,7 @@ def states_id(id):
     switch = 1
     for k, v in s.items():
         if v.id == id:
-           return render_template('9-states.html', states=v, switch=switch) 
+            return render_template('9-states.html', states=v, switch=switch)
 
     return render_template('9-states.html', states=None, switch=switch)
 
