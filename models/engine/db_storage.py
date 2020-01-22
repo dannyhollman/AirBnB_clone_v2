@@ -32,7 +32,7 @@ class DBStorage:
         db = os.environ['HBNB_MYSQL_DB']
 
         squrl = 'mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, db)
-        DBStorage.__engine = create_engine(squrl, pool_pre_ping=True)
+        self.__engine = create_engine(squrl, pool_pre_ping=True)
         self.reload()
 
         # drop all tables if HBNB_ENV == 'test'
@@ -45,12 +45,12 @@ class DBStorage:
             returns a dictionary of all objects
         """
         q = []
-        q.extend(DBStorage.__session.query(User).all())
-        q.extend(DBStorage.__session.query(State).all())
-        q.extend(DBStorage.__session.query(City).all())
-        q.extend(DBStorage.__session.query(Amenity).all())
-        q.extend(DBStorage.__session.query(Place).all())
-        q.extend(DBStorage.__session.query(Review).all())
+        q.extend(self.__session.query(User).all())
+        q.extend(self.__session.query(State).all())
+        q.extend(self.__session.query(City).all())
+        q.extend(self.__session.query(Amenity).all())
+        q.extend(self.__session.query(Place).all())
+        q.extend(self.__session.query(Review).all())
         ret = {}
 
         if cls is not None:
@@ -72,27 +72,26 @@ class DBStorage:
             obj: given object
         """
         if obj:
-            DBStorage.__session.add(obj)
+            self.__session.add(obj)
 
     def delete(self, obj=None):
         """delete the given obj from db if not none"""
         if obj:
-            DBStorage.__session.delete(obj)
+            self.__session.delete(obj)
 
     def save(self):
         """commit all changes to db
         """
-        DBStorage.__session.commit()
+        self.__session.commit()
 
     def reload(self):
         """create all tables in the db and create current session from engine
         """
-        Base.metadata.create_all(DBStorage.__engine)
-        Session = sessionmaker()
-        Session.configure(bind=DBStorage.__engine)
-        DBStorage.__session = scoped_session(Session)
+        Base.metadata.create_all(self.__engine)
+        session = scoped_session(sessionmaker(bind=self.__engine))
+        self.__session = session 
 
     def close(self):
         """calls remove method on private attribute or close() on session
         """
-        DBStorage.__session.close()
+        self.__session.remove()
