@@ -36,7 +36,7 @@ class DBStorage:
         self.reload()
 
         # drop all tables if HBNB_ENV == 'test'
-        if os.environ['HBNB_ENV'] == 'test':
+        if "HBNB_EN" in os.environ and os.environ['HBNB_ENV'] == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
