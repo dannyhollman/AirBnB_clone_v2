@@ -87,11 +87,12 @@ class DBStorage:
     def reload(self):
         """create all tables in the db and create current session from engine
         """
-        Base.metadata.create_all(self.__engine)
-        session = scoped_session(sessionmaker(bind=self.__engine))
-        self.__session = session 
+        Base.metadata.create_all(DBStorage.__engine)
+        Session = sessionmaker()
+        Session.configure(bind=DBStorage.__engine)
+        DBStorage.__session = scoped_session(Session)
 
     def close(self):
         """calls remove method on private attribute or close() on session
         """
-        self.__session.remove()
+        DBStorage.__session.remove()
