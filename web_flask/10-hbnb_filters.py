@@ -10,7 +10,8 @@ app.url_map.strict_slashes = False
 def nav_bar():
     """ display states """
     states = storage.all('State')
-    return render_template('10-hbnb_filters.html', states=states)
+    amenities = storage.all('Amenity')
+    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
 
 
 @app.teardown_appcontext
