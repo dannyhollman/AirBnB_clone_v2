@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="styles/4-common.css">
-    <link rel="stylesheet" type="text/css" href="styles/3-header.css">
-    <link rel="stylesheet" type="text/css" href="styles/3-footer.css">
-    <link rel="stylesheet" type="text/css" href="styles/6-filters.css">
-    <link rel="icon" href="images/icon.png" />
+    <link rel="stylesheet" type="text/css" href="static/styles/4-common.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-header.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/3-footer.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/6-filters.css">
+    <link rel="icon" href="static/images/icon.png') }}" />
     <title>HBnB</title>
   </head>
   <body>
@@ -16,15 +16,16 @@
       <section class="filters">
         <div class="locations">
           <h3>States</h3>
+	  <h4>&nbsp;</h4>
           <div class="popover">
             <ul>
 	      {% for state in states.values()|sort(attribute='name') %}
               <li>
 		<h2>{{ state.name }}:</h2>
                 <ul>
-		{% for city in state.cities|sort(attribute='name') %}
+		  {% for city in state.cities|sort(attribute='name') %}
 		  <li>{{ city.name }}</li>
-		{% endfor %}
+		  {% endfor %}
                 </ul>
               </li>
 	      {% endfor %}
@@ -33,6 +34,7 @@
         </div>
         <div class="amenities">
           <h3>Amenities</h3>
+	  <h4>&nbsp;</h4>
           <div class="popover">
             <ul>
 	      {% for amenity in amenities.values()|sort(attribute='name') %}
